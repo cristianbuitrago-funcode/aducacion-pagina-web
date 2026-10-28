@@ -48,3 +48,7 @@ test('la base de prueba solo contiene usuarios inventados (@prueba.test)', () =>
   assert.ok(correos.length >= 3);
   correos.forEach((c) => assert.match(c, /@prueba\.test$/));
 });
+
+test('ningún archivo de la plataforma contiene el carácter de reemplazo U+FFFD (el publicador de artifacts lo rechaza)', () => {
+  for (const f of lista) assert.ok(!fs.readFileSync(f, 'utf8').includes('\uFFFD'), path.relative(RAIZ, f));
+});

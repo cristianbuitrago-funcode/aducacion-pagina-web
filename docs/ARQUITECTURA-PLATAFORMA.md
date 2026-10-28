@@ -62,5 +62,6 @@ actualizado)` con consultas preparadas. Hasta tener autenticación real no convi
 - `tests/unit`: motor (escape, resaltador sin pérdida en los 43 fragmentos, evaluación, progreso,
   calendario), contenido (17 elementos por clase, plan de 60 = 60, referencias válidas) y seguridad.
 - `tests/e2e`: Chromium real: todas las rutas, navegación, guardado, evaluación, calendario,
-  exportar/importar, glosario, modo profesor, móvil 360 px y servidor local.
+  exportar/importar, confirmación de borrado, tema oscuro explícito, glosario, modo profesor,
+  móvil 360 px y servidor local.
 - `tools/verificar-secretos.js`: compara contra los valores sensibles del proyecto original.

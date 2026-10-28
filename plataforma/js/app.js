@@ -542,9 +542,14 @@
           '</td><td class="num">' + (q ? q.mejor + '% (' + q.intentos + ')' : '—') + '</td></tr>';
       }).join('') + '</tbody></table></div>' +
       '<section class="seccion"><h2>Copia de seguridad del progreso</h2><p>El progreso se guarda <strong>solo en este navegador</strong>. Exporta un archivo de vez en cuando (por ejemplo, al final de cada clase) y guárdalo en una carpeta segura. Para pasar el progreso a otro equipo, impórtalo allí.</p>' +
-      '<div class="acciones"><button type="button" class="boton primario" data-accion="exportar">⬇️ Exportar progreso (.json)</button>' +
+      '<div class="acciones"><button type="button" class="boton primario" data-accion="exportar">⬇️ Exportar progreso</button>' +
       '<label class="boton">⬆️ Importar progreso<input type="file" accept="application/json,.json" data-accion="importar" class="sr-only"></label>' +
-      '<button type="button" class="boton peligro" data-accion="reiniciar">Borrar todo el progreso</button></div><p id="mensaje-progreso" aria-live="polite"></p></section>';
+      '<button type="button" class="boton peligro" data-accion="reiniciar">Borrar todo el progreso</button></div>' +
+      '<div id="confirmar-borrado" class="nota nota-alerta" hidden><p>¿Borrar TODO el progreso de este navegador? No se puede deshacer. Exporta antes una copia si la necesitas.</p>' +
+      '<div class="acciones"><button type="button" class="boton peligro" data-accion="reiniciar-si">Sí, borrar todo</button><button type="button" class="boton" data-accion="reiniciar-no">Cancelar</button></div></div>' +
+      '<div id="zona-export" hidden><label for="export-json">Progreso exportado (cópialo y guárdalo como .json)</label><textarea id="export-json" class="export-json" readonly></textarea>' +
+      '<button type="button" class="boton" data-accion="copiar-export">Copiar</button></div>' +
+      '<p id="mensaje-progreso" aria-live="polite"></p></section>';
   };
 
   function migas(items) {
@@ -617,17 +622,32 @@
       var claseAttr = form.getAttribute('data-clase');
       form.outerHTML = quiz(id, preguntasDe(id), claseAttr === '' ? null : +claseAttr);
     } else if (accion === 'exportar') {
-      var blob = new Blob([Progreso.exportar()], { type: 'application/json' });
-      var a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = 'funcode-academy-progreso-' + new Date().toISOString().slice(0, 10) + '.json';
-      document.body.appendChild(a); a.click(); a.remove();
-      setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
-      mensajeProgreso('Archivo exportado. Guárdalo en una carpeta segura.');
+      var json = Progreso.exportar();
+      // Descarga el archivo (funciona al abrir la plataforma en el equipo)...
+      try {
+        var blob = new Blob([json], { type: 'application/json' });
+        var a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'funcode-academy-progreso-' + new Date().toISOString().slice(0, 10) + '.json';
+        document.body.appendChild(a); a.click(); a.remove();
+        setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
+      } catch (e) { /* sin descargas: queda el texto para copiar */ }
+      // ...y además muestra el texto, por si el navegador o el visor bloquean descargas.
+      document.getElementById('zona-export').hidden = false;
+      document.getElementById('export-json').value = json;
+      mensajeProgreso('Si no se descargó el archivo, copia el texto de abajo y guárdalo como .json.');
+    } else if (accion === 'copiar-export') {
+      var ta = document.getElementById('export-json');
+      var manual = function () { ta.select(); mensajeProgreso('Selecciona el texto y cópialo con Ctrl+C.'); };
+      if (navigator.clipboard) navigator.clipboard.writeText(ta.value).then(function () { mensajeProgreso('Copiado. Pégalo en un archivo .json y guárdalo.'); }, manual);
+      else manual();
     } else if (accion === 'reiniciar') {
-      if (window.confirm('¿Seguro que quieres borrar TODO el progreso de este navegador? Esta acción no se puede deshacer. Exporta antes una copia si la necesitas.')) {
-        Progreso.reiniciar(); ruta(); mensajeProgreso('Progreso borrado.');
-      }
+      // Confirmación dentro de la página: algunos visores no muestran confirm().
+      document.getElementById('confirmar-borrado').hidden = false;
+    } else if (accion === 'reiniciar-si') {
+      Progreso.reiniciar(); ruta(); mensajeProgreso('Progreso borrado.');
+    } else if (accion === 'reiniciar-no') {
+      document.getElementById('confirmar-borrado').hidden = true;
     }
   });
 

@@ -60,6 +60,31 @@
     color-scheme: dark;
   }
 }
+/* Selector de tema explícito (por ejemplo, el del visor de artifacts) */
+:root[data-theme="dark"] {
+    --fondo: #0b1220;
+    --superficie: #111a2b;
+    --superficie-2: #18243a;
+    --texto: #e5ebf3;
+    --texto-suave: #a7b4c6;
+    --borde: #2a3a55;
+    --marca: #0b1f33;
+    --acento: #2dd4bf;
+    --acento-texto: #04201d;
+    --acento-suave: #123b39;
+    --amarillo: #fbbf24;
+    --amarillo-suave: #3a2c0b;
+    --rojo: #f87171;
+    --rojo-suave: #3b1414;
+    --verde: #4ade80;
+    --verde-suave: #10301d;
+    --azul: #93c5fd;
+    --azul-suave: #142545;
+    --morado: #c4b5fd;
+    --morado-suave: #261b45;
+    --sombra: 0 1px 2px rgba(0, 0, 0, .4);
+    color-scheme: dark;
+  }
 
 * { box-sizing: border-box; }
 html { scroll-padding-top: 80px; }
@@ -88,7 +113,7 @@ img { max-width: 100%; }
 
 /* ---------- barra superior ---------- */
 .barra-superior {
-  position: sticky; top: 0; z-index: 50;
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 50;
   display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;
   padding: .55rem clamp(1rem, 3vw, 2rem);
   background: var(--marca); color: #fff;
@@ -133,6 +158,8 @@ main { max-width: 1180px; margin: 0 auto; padding: 1.2rem clamp(1rem, 3vw, 2rem)
 .migas a { color: var(--texto-suave); }
 .error { color: var(--rojo); }
 .ok { color: var(--verde); }
+[hidden] { display: none !important; }
+.export-json { width: 100%; min-height: 10rem; font-family: var(--mono); font-size: .8rem; margin: .4rem 0; }
 
 .boton {
   display: inline-flex; align-items: center; justify-content: center; gap: .4rem;

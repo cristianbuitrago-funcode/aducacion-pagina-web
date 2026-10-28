@@ -6,8 +6,8 @@ Entorno: Linux, Node.js 22.22.0, Chromium (Playwright), PHP 8.3.6, MariaDB 10.11
 
 | Prueba | Comando | Resultado |
 |---|---|---|
-| Unitarias: motor, contenido de las 10 clases, seguridad | `npm test` | **60 / 60 correctas** |
-| Navegador real (Chromium) | `npm run test:e2e` | **12 / 12 correctas** (3 ejecuciones seguidas) |
+| Unitarias: motor, contenido de las 10 clases, seguridad | `npm test` | **61 / 61 correctas** |
+| Navegador real (Chromium) | `npm run test:e2e` | **13 / 13 correctas** |
 | Verificación de secretos contra el proyecto original | `node tools/verificar-secretos.js …` | **0 coincidencias** (110 valores sensibles comprobados) |
 | Prueba negativa del verificador (secreto insertado en una copia temporal) | — | Detectado correctamente |
 
@@ -15,7 +15,7 @@ Las pruebas de navegador cubren: las 110 lecciones y todas las secciones sin err
 navegación inicio → clases → clase → lecciones (siguiente/anterior); completar lección y recargar;
 evaluación (retroalimentación, reintento, aprobación al 100 %, mejor resultado guardado); textos y
 casillas guardados; resaltado de líneas de código; calendario (60/90 min, posible festivo, cancelar
-y recalcular); exportar → borrar → importar progreso; buscador del glosario; modo profesor;
+y recalcular); exportar (archivo y texto para copiar) → cancelar y confirmar el borrado en la página → importar progreso; tema oscuro explícito (`data-theme`); buscador del glosario; modo profesor;
 celular de 360 px sin desplazamiento horizontal en 12 vistas y menú desplegable; servidor local.
 
 Revisión visual (capturas): inicio, lección de código con líneas resaltadas, diagramas de carriles
