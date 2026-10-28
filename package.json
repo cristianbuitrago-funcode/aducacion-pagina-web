@@ -1,0 +1,16 @@
+{
+  "name": "funcode-academy",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Funcode Academy — Formación Web de Marcos. Plataforma educativa estática (HTML, CSS y JavaScript sin dependencias).",
+  "scripts": {
+    "start": "node tools/servidor.js",
+    "test": "node --test \"tests/unit/*.test.js\"",
+    "test:e2e": "node --test --test-concurrency=1 \"tests/e2e/*.test.js\"",
+    "verificar-secretos": "node tools/verificar-secretos.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "license": "UNLICENSED"
+}

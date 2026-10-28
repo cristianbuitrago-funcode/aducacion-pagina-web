@@ -1,0 +1,7 @@
+node_modules/
+*.log
+.DS_Store
+# Nunca subir copias de la web de Marcos, volcados reales ni progreso exportado
+Proyecto_GE*/
+*.zip
+funcode-academy-progreso-*.json
