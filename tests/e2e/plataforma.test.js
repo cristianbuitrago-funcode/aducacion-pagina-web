@@ -157,8 +157,13 @@ test('progreso: exportar, borrar e importar restaura todo', { skip: omitir }, as
   const json = JSON.parse(fs.readFileSync(destino, 'utf8'));
   assert.equal(json.app, 'funcode-academy');
   assert.ok(json.lecciones['4:conceptos'].completada);
-  p.once('dialog', (d) => d.accept());
+  assert.equal(JSON.parse(await p.inputValue('#export-json')).app, 'funcode-academy', 'también muestra el texto para copiar');
   await p.click('[data-accion="reiniciar"]');
+  await p.click('[data-accion="reiniciar-no"]');
+  assert.equal(await p.isVisible('#confirmar-borrado'), false, 'cancelar no borra');
+  assert.match(await p.textContent('.progreso-global'), /1 de 110/);
+  await p.click('[data-accion="reiniciar"]');
+  await p.click('[data-accion="reiniciar-si"]');
   await p.waitForFunction(() => document.querySelector('#mensaje-progreso') && document.querySelector('#mensaje-progreso').textContent.includes('borrado'));
   assert.match(await p.textContent('.progreso-global'), /0 de 110/);
   await p.setInputFiles('input[data-accion="importar"]', destino);
@@ -187,6 +192,17 @@ test('modo profesor muestra los guiones dentro de las lecciones y se recuerda', 
   assert.equal(await p.isVisible('.guion-profesor'), true);
   await p.reload(); await p.waitForSelector('article.leccion');
   assert.equal(await p.isVisible('.guion-profesor'), true);
+  await p.context().close();
+});
+
+test('tema: respeta data-theme="dark" explícito aunque el sistema esté en claro', { skip: omitir }, async () => {
+  const p = await pagina({ colorScheme: 'light' });
+  await ir(p, '');
+  const claro = await p.evaluate(() => getComputedStyle(document.body).backgroundColor);
+  await p.evaluate(() => document.documentElement.setAttribute('data-theme', 'dark'));
+  const oscuro = await p.evaluate(() => getComputedStyle(document.body).backgroundColor);
+  assert.notEqual(claro, oscuro);
+  assert.equal(oscuro, 'rgb(11, 18, 32)');
   await p.context().close();
 });
 

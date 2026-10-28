@@ -45,8 +45,11 @@ Botón **🎓 Modo profesor** (arriba): muestra las indicaciones del guion dentr
 - Se guarda en el **almacenamiento local del navegador** (`localStorage`) del equipo donde se usa.
 - No se sincroniza entre equipos ni navegadores. Si se borran los datos de navegación o se usa
   modo incógnito, el progreso no estará.
-- **Copia de seguridad:** sección *Progreso* → “Exportar progreso (.json)”. Guarda el archivo
-  (por ejemplo, al final de cada clase). Para restaurarlo o pasarlo a otro equipo: “Importar progreso”.
+- **Copia de seguridad:** sección *Progreso* → “Exportar progreso”. Descarga un archivo `.json` y,
+  además, muestra el mismo contenido como texto con un botón “Copiar” (útil donde las descargas están
+  bloqueadas, como en el visor de artifacts de Claude: se pega en un archivo `.json`). Guárdalo, por
+  ejemplo, al final de cada clase. Para restaurarlo o pasarlo a otro equipo: “Importar progreso”.
+- “Borrar todo el progreso” pide confirmación dentro de la propia página.
 
 ## 4. Privacidad y publicación
 
@@ -57,6 +60,13 @@ Botón **🎓 Modo profesor** (arriba): muestra las indicaciones del guion dentr
   exponer los fragmentos de código y la auditoría de seguridad de la web de Marcos.
 - `index.html` incluye `noindex, nofollow` para que los buscadores no la indexen, pero eso **no** es
   una protección.
+
+## 4b. Versión publicada como artifact
+
+La plataforma también está publicada como artifact privado de Claude. Es el mismo código de
+`plataforma/`; al publicarla solo se quita la envoltura `<!DOCTYPE>`/`<html>`/`<head>`/`<body>` de
+`index.html`, porque el visor la añade. En el artifact el progreso se guarda en el navegador de cada
+persona y no se comparte con la versión local (se pasa exportando e importando).
 
 ## 5. Entorno local para practicar con la web de Marcos
 
@@ -74,8 +84,8 @@ Las clases 2 a 10 usan una **copia local** de la web de Marcos (nunca la web rea
 ## 6. Pruebas
 
 ```bash
-npm test                 # 60 pruebas unitarias (Node 18+, sin dependencias)
-npm run test:e2e         # 12 pruebas en navegador real (requiere Playwright)
+npm test                 # 61 pruebas unitarias (Node 18+, sin dependencias)
+npm run test:e2e         # 13 pruebas en navegador real (requiere Playwright)
 node tools/verificar-secretos.js <carpeta Proyecto_GE-master>   # comprueba que no se filtró nada
 ```
 
